@@ -1,27 +1,27 @@
-const prisma = require('../../prisma/client')
+const prisma = require("../../prisma/client");
 const { resError, resSuccess } = require("../../services/responseHandler");
 const ITEM_LIMIT = 2;
 
 exports.create = async (req, res) => {
     try {
-        const { nomorTelepon, nama, alamat } = req.body;
-        const data = await prisma.supir.create({
+        const { nisn, cardID, nama } = req.body;
+        const data = await prisma.siswa.create({
             data: {
+                nisn: nisn,
+                cardId: cardID,
                 nama: nama,
-                alamat: alamat,
-                nomorTelepon: nomorTelepon,
             },
         });
         resSuccess({
             res,
-            title: "Berhasil menambahkan data supir",
+            title: "Berhasil menambahkan data siswa",
             data: data,
         });
     } catch (error) {
         resError({
             res,
             errors: error,
-            title: "Gagal memasukan data supir",
+            title: "Gagal memasukan data siswa",
             code: 400,
         });
     }
@@ -30,10 +30,10 @@ exports.create = async (req, res) => {
 exports.list = async (req, res) => {
     try {
         const { search, cursor } = req.query;
-        let daftarSupir;
+        let daftarsiswa;
         if (search) {
             if (!cursor) {
-                daftarSupir = await prisma.supir.findMany({
+                daftarsiswa = await prisma.siswa.findMany({
                     where: {
                         nama: {
                             contains: search,
@@ -48,7 +48,7 @@ exports.list = async (req, res) => {
             }
 
             if (cursor) {
-                daftarSupir = await prisma.supir.findMany({
+                daftarsiswa = await prisma.siswa.findMany({
                     where: {
                         nama: {
                             contains: search,
@@ -68,7 +68,7 @@ exports.list = async (req, res) => {
         }
         if (!search) {
             if (!cursor) {
-                daftarSupir = await prisma.supir.findMany({
+                daftarsiswa = await prisma.siswa.findMany({
                     orderBy: {
                         nama: "asc",
                     },
@@ -76,7 +76,7 @@ exports.list = async (req, res) => {
                 });
             }
             if (cursor) {
-                daftarSupir = await prisma.supir.findMany({
+                daftarsiswa = await prisma.siswa.findMany({
                     orderBy: {
                         nama: "asc",
                     },
@@ -90,14 +90,14 @@ exports.list = async (req, res) => {
         }
         return resSuccess({
             res,
-            title: "Berhasil menampilkan data supir",
-            data: daftarSupir,
+            title: "Berhasil menampilkan data siswa",
+            data: daftarsiswa,
         });
     } catch (error) {
         resError({
             res,
             errors: error,
-            title: "Gagal menampilkan data supir",
+            title: "Gagal menampilkan data siswa",
             code: 400,
         });
     }
@@ -105,28 +105,28 @@ exports.list = async (req, res) => {
 
 exports.edit = async (req, res) => {
     try {
-        const { id, nomorTelepon, nama, alamat } = req.body;
-        const data = await prisma.supir.update({
+        const { id, nisn, cardID, nama } = req.body;
+        const data = await prisma.siswa.update({
             where: {
                 id: id,
             },
             data: {
-                nama: nama,
-                nomorTelepon: nomorTelepon,
-                alamat: alamat,
+                nisn: nisn,
+                cardId: cardID,
+                nama : nama,
             },
         });
 
         return resSuccess({
             res,
-            title: "Berhasil mengubah data supir",
+            title: "Berhasil mengubah data siswa",
             data: data,
         });
     } catch (error) {
         resError({
             res,
             errors: error,
-            title: "Gagal mengubah data supir",
+            title: "Gagal mengubah data siswa",
             code: 400,
         });
     }
@@ -135,21 +135,21 @@ exports.edit = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const { id } = req.body;
-        const data = await prisma.supir.delete({
+        const data = await prisma.siswa.delete({
             where: {
                 id: id,
             },
         });
         return resSuccess({
             res,
-            title: "Berhasil menghapus data supir",
+            title: "Berhasil menghapus data siswa",
             data: data,
         });
     } catch (error) {
         resError({
             res,
             errors: error,
-            title: "Gagal menghapus data supir",
+            title: "Gagal menghapus data siswa",
             code: 400,
         });
     }
