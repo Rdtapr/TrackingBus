@@ -70,17 +70,21 @@ model Siswa {
 }
 
 model Commute {
-  id        String   @id @default(cuid())
-  siswa     Siswa[]
-  bis       Bis[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String   @id @default(cuid())
+  startPosition     String?
+  finishPosition    String?
+  isActiveCommuting Boolean?
+  siswa             Siswa[]
+  bis               Bis[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model Bis {
   id          String     @id @default(cuid())
   nomorPolisi String?    @unique
   merek       String?
+  position    String?
   status      STATUS_BIS @default(NORMAL)
   supir       Supir?     @relation(fields: [supirId], references: [id])
   createdAt   DateTime   @default(now())
