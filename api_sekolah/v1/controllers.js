@@ -154,3 +154,83 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+exports.hubungkanSekolahDenganSiswa = async (req, res) => {
+    try {
+        const { idSiswa, idSekolah } = req.body;
+        const data = await prisma.sekolah.update({
+            where: {
+                id: idSekolah,
+            },
+            data: {
+                siswa: {
+                    connect: {
+                        id: idSiswa,
+                    },
+                },
+            },
+            select: {
+                id: true,
+                nama: true,
+                alamat: true,
+                siswa: {
+                    where: {
+                        id: idSiswa,
+                    },
+                    select: {
+                        nama: true,
+                    },
+                },
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil menautkan siswa dengan sekolah",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal menautkan data siswa dengan sekolah",
+            code: 400,
+        });
+    }
+};
+
+exports.putuskanHubunganSekolahDenganSiswa = async (req, res) => {
+    try {
+        const { idSiswa, idSekolah } = req.body;
+        const data = await prisma.sekolah.update({
+            where: {
+                id: idSekolah,
+            },
+            data: {
+                siswa: {
+                    disconnect: {
+                        id: idSiswa,
+                    },
+                },
+            },
+            select: {
+                id: true,
+                nama: true,
+                alamat: true,
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil melepas tautan sekolah dengan siswa",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal melepas tautan sekolah dengan siswa",
+            code: 400,
+        });
+    }
+};

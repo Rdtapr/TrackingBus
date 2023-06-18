@@ -9,4 +9,7 @@ router
     .patch(controllers.edit)
     .delete(controllers.delete);
 
+router.post("/siswa/pair", controllers.hubungkanSekolahDenganSiswa);
+router.patch("/siswa/unpair", controllers.putuskanHubunganSekolahDenganSiswa);
+
 module.exports = router;

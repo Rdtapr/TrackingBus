@@ -292,7 +292,7 @@ exports.hubungkanSiswaKeSekolah = async (req, res) => {
 
 exports.putuskanHubungkanSiswaKeSekolah = async (req, res) => {
     try {
-        const { idSiswa, idSekolah } = req.body;
+        const { idSiswa } = req.body;
         const data = await prisma.siswa.update({
             where: {
                 id: idSiswa,
