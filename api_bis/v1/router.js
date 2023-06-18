@@ -9,4 +9,8 @@ router
     .patch(controllers.edit)
     .delete(controllers.delete);
 
+router.patch("/driver/set", controllers.setSupirBis);
+router.patch("/status/set-emergency", controllers.setKondisiDarurat);
+router.patch("/status/unset-emergency", controllers.setKondisiNormal);
+
 module.exports = router;

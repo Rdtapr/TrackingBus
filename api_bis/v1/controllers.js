@@ -153,3 +153,96 @@ exports.delete = async (req, res) => {
         });
     }
 };
+
+exports.setSupirBis = async (req, res) => {
+    try {
+        const { idBis, idSupirBis } = req.body;
+        const data = await prisma.bis.update({
+            where: {
+                id: idBis,
+            },
+            data: {
+                supir: {
+                    connect: {
+                        id: idSupirBis,
+                    },
+                },
+            },
+            select: {
+                nomorPolisi: true,
+                status: true,
+                id: true,
+                merek: true,
+                supir: {
+                    select: {
+                        nama: true,
+                    },
+                },
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mengatur pengemudi bis",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal mengatur pengemudi bis",
+            code: 400,
+        });
+    }
+};
+
+exports.setKondisiDarurat = async (req, res) => {
+    try {
+        const { idBis } = req.body;
+        const data = await prisma.bis.update({
+            where: {
+                id: idBis,
+            },
+            data: {
+                status: "DARURAT",
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mengatur status bis menjadi darurat",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal mengatur status bis menjadi darurat",
+            code: 400,
+        });
+    }
+};
+
+exports.setKondisiNormal = async (req, res) => {
+    try {
+        const { idBis } = req.body;
+        const data = await prisma.bis.update({
+            where: {
+                id: idBis,
+            },
+            data: {
+                status: "NORMAL",
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mengatur status bis menjadi normal",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal mengatur status bis menjadi normal",
+            code: 400,
+        });
+    }
+};
