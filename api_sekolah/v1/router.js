@@ -11,5 +11,6 @@ router
 
 router.post("/siswa/pair", controllers.hubungkanSekolahDenganSiswa);
 router.patch("/siswa/unpair", controllers.putuskanHubunganSekolahDenganSiswa);
+router.get("/siswa/list/:idSekolah", controllers.daftarSiswaDiSekolah);
 
 module.exports = router;

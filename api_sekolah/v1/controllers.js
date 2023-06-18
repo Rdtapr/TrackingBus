@@ -234,3 +234,47 @@ exports.putuskanHubunganSekolahDenganSiswa = async (req, res) => {
         });
     }
 };
+
+exports.daftarSiswaDiSekolah = async (req, res) => {
+    try {
+        const { idSekolah } = req.params;
+        const { cursor } = req.query;
+
+        const dataSekolah = await prisma.sekolah.findUniqueOrThrow({
+            where: {
+                id: idSekolah,
+            },
+            select: {
+                nama: true,
+                alamat: true,
+            },
+        });
+
+        let daftarSiswa;
+        if (!cursor) {
+            daftarSiswa = await prisma.siswa.findMany({
+                where: {
+                    sekolahId: idSekolah,
+                },
+                take: 20,
+                select: {
+                    id: true,
+                    nama: true,
+                    nisn: true,
+                },
+            });
+        }
+        return resSuccess({
+            res,
+            title: "Sukses menampilkan daftar siswa",
+            data: { dataSekolah, daftarSiswa },
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal menampilkan daftar siswa",
+            code: 400,
+        });
+    }
+};
