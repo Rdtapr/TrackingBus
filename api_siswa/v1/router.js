@@ -9,7 +9,9 @@ router
     .patch(controllers.edit)
     .delete(controllers.delete);
 
-router.post("/card/pair", controllers.pairSiswaToCard);
-router.patch("/card/unpair", controllers.unPairSiswaToCard);
+router.post("/card/pair", controllers.hubungkanSiswaKeKartu);
+router.patch("/card/unpair", controllers.pustuskanHubungkanSiswaKeKartu);
+router.post("/school/pair", controllers.hubungkanSiswaKeSekolah);
+router.patch("/school/unpair", controllers.putuskanHubungkanSiswaKeSekolah);
 
 module.exports = router;

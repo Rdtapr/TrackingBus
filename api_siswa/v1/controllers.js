@@ -44,6 +44,16 @@ exports.list = async (req, res) => {
                         nama: "asc",
                     },
                     take: ITEM_LIMIT,
+                    select: {
+                        id: true,
+                        nisn: true,
+                        nama: true,
+                        Sekolah: {
+                            select: {
+                                nama: true,
+                            },
+                        },
+                    },
                 });
             }
 
@@ -63,6 +73,16 @@ exports.list = async (req, res) => {
                     cursor: {
                         id: cursor,
                     },
+                    select: {
+                        id: true,
+                        nisn: true,
+                        nama: true,
+                        Sekolah: {
+                            select: {
+                                nama: true,
+                            },
+                        },
+                    },
                 });
             }
         }
@@ -73,6 +93,16 @@ exports.list = async (req, res) => {
                         nama: "asc",
                     },
                     take: ITEM_LIMIT,
+                    select: {
+                        id: true,
+                        nisn: true,
+                        nama: true,
+                        Sekolah: {
+                            select: {
+                                nama: true,
+                            },
+                        },
+                    },
                 });
             }
             if (cursor) {
@@ -84,6 +114,16 @@ exports.list = async (req, res) => {
                     skip: 1,
                     cursor: {
                         id: cursor,
+                    },
+                    select: {
+                        id: true,
+                        nisn: true,
+                        nama: true,
+                        Sekolah: {
+                            select: {
+                                nama: true,
+                            },
+                        },
                     },
                 });
             }
@@ -155,7 +195,7 @@ exports.delete = async (req, res) => {
     }
 };
 
-exports.pairSiswaToCard = async (req, res) => {
+exports.hubungkanSiswaKeKartu = async (req, res) => {
     try {
         const { id, cardID } = req.body;
         const data = await prisma.siswa.update({
@@ -182,7 +222,7 @@ exports.pairSiswaToCard = async (req, res) => {
     }
 };
 
-exports.unPairSiswaToCard = async (req, res) => {
+exports.pustuskanHubungkanSiswaKeKartu = async (req, res) => {
     try {
         const { id } = req.body;
         const data = await prisma.siswa.update({
@@ -204,6 +244,87 @@ exports.unPairSiswaToCard = async (req, res) => {
             res,
             errors: error,
             title: "Gagal melepas tautan data siswa dengan kartu",
+            code: 400,
+        });
+    }
+};
+
+exports.hubungkanSiswaKeSekolah = async (req, res) => {
+    try {
+        const { idSiswa, idSekolah } = req.body;
+        const data = await prisma.siswa.update({
+            where: {
+                id: idSiswa,
+            },
+            data: {
+                Sekolah: {
+                    connect: {
+                        id: idSekolah,
+                    },
+                },
+            },
+            select: {
+                id: true,
+                nisn: true,
+                nama: true,
+                Sekolah: {
+                    select: {
+                        nama: true,
+                    },
+                },
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil menautkan siswa dengan sekolah",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal menautkan data siswa dengan sekolah",
+            code: 400,
+        });
+    }
+};
+
+exports.putuskanHubungkanSiswaKeSekolah = async (req, res) => {
+    try {
+        const { idSiswa, idSekolah } = req.body;
+        const data = await prisma.siswa.update({
+            where: {
+                id: idSiswa,
+            },
+            data: {
+                Sekolah: {
+                    disconnect: true,
+                },
+            },
+            select: {
+                id: true,
+                nisn: true,
+                nama: true,
+                Sekolah: {
+                    select: {
+                        nama: true,
+                    },
+                },
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil melepas tautan siswa dengan sekolah",
+            data: data,
+        });
+    } catch (error) {
+        console.log(error);
+        resError({
+            res,
+            errors: error,
+            title: "Gagal melepas tautan siswa dengan sekolah",
             code: 400,
         });
     }
