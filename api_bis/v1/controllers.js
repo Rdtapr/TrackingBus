@@ -35,13 +35,13 @@ exports.list = async (req, res) => {
             if (!cursor) {
                 daftarbis = await prisma.bis.findMany({
                     where: {
-                        nama: {
+                        merek: {
                             contains: search,
                             mode: "insensitive",
                         },
                     },
                     orderBy: {
-                        nama: "asc",
+                        merek: "asc",
                     },
                     take: ITEM_LIMIT,
                 });
@@ -50,13 +50,13 @@ exports.list = async (req, res) => {
             if (cursor) {
                 daftarbis = await prisma.bis.findMany({
                     where: {
-                        nama: {
+                        merek: {
                             contains: search,
                             mode: "insensitive",
                         },
                     },
                     orderBy: {
-                        nama: "asc",
+                        merek: "asc",
                     },
                     take: ITEM_LIMIT,
                     skip: 1,
@@ -70,7 +70,7 @@ exports.list = async (req, res) => {
             if (!cursor) {
                 daftarbis = await prisma.bis.findMany({
                     orderBy: {
-                        nama: "asc",
+                        merek: "asc",
                     },
                     take: ITEM_LIMIT,
                 });
@@ -78,7 +78,7 @@ exports.list = async (req, res) => {
             if (cursor) {
                 daftarbis = await prisma.bis.findMany({
                     orderBy: {
-                        nama: "asc",
+                        merek: "asc",
                     },
                     take: ITEM_LIMIT,
                     skip: 1,
@@ -112,7 +112,7 @@ exports.edit = async (req, res) => {
             },
             data: {
                 nomorPolisi: nomorPolisi,
-                merk: merk,
+                merek: merk,
             },
         });
 
