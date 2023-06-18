@@ -9,4 +9,7 @@ router
     .patch(controllers.edit)
     .delete(controllers.delete);
 
+router.post("/card/pair", controllers.pairSiswaToCard);
+router.patch("/card/unpair", controllers.unPairSiswaToCard);
+
 module.exports = router;

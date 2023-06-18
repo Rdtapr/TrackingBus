@@ -113,7 +113,7 @@ exports.edit = async (req, res) => {
             data: {
                 nisn: nisn,
                 cardId: cardID,
-                nama : nama,
+                nama: nama,
             },
         });
 
@@ -150,6 +150,60 @@ exports.delete = async (req, res) => {
             res,
             errors: error,
             title: "Gagal menghapus data siswa",
+            code: 400,
+        });
+    }
+};
+
+exports.pairSiswaToCard = async (req, res) => {
+    try {
+        const { id, cardID } = req.body;
+        const data = await prisma.siswa.update({
+            where: {
+                id: id,
+            },
+            data: {
+                cardId: cardID,
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil menautkan siswa dengan kartu",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal menautkan data siswa dengan kartu",
+            code: 400,
+        });
+    }
+};
+
+exports.unPairSiswaToCard = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const data = await prisma.siswa.update({
+            where: {
+                id: id,
+            },
+            data: {
+                cardId: null,
+            },
+        });
+
+        return resSuccess({
+            res,
+            title: "Berhasil melepas tautan siswa dengan kartu",
+            data: data,
+        });
+    } catch (error) {
+        resError({
+            res,
+            errors: error,
+            title: "Gagal melepas tautan data siswa dengan kartu",
             code: 400,
         });
     }
