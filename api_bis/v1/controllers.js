@@ -1,5 +1,6 @@
 const prisma = require("../../prisma/client");
 const { resError, resSuccess } = require("../../services/responseHandler");
+const axios = require("axios");
 const ITEM_LIMIT = 2;
 
 exports.create = async (req, res) => {
@@ -243,6 +244,83 @@ exports.setKondisiNormal = async (req, res) => {
             errors: error,
             title: "Gagal mengatur status bis menjadi normal",
             code: 400,
+        });
+    }
+};
+
+exports.setBusPosition = async (req, res) => {
+    try {
+        const { idBis, position } = req.body;
+        const data = await prisma.bis.update({
+            where: {
+                id: idBis,
+            },
+            data: {
+                position,
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mengatur posisi bis",
+            data: data,
+        });
+    } catch (error) {
+        return resError({
+            res,
+            title: "Gagal mengatur posisi bis",
+            data: data,
+        });
+    }
+};
+
+exports.detailBis = async (req, res) => {
+    try {
+        const { idBis } = req.params;
+
+        const data = await prisma.bis.findUnique({
+            where: {
+                id: idBis,
+            },
+            select: {
+                id: true,
+                nomorPolisi: true,
+                merek: true,
+                position: true,
+                status: true,
+                supir: {
+                    select: {
+                        nama: true,
+                    },
+                },
+            },
+        });
+
+        const openstreetmap = await axios.get(
+            "https://nominatim.openstreetmap.org/reverse",
+            {
+                params: {
+                    lat: String(data.position)
+                        .split(",")[0]
+                        .replaceAll(" ", ""),
+                    lon: String(data.position)
+                        .split(",")[1]
+                        .replaceAll(" ", ""),
+                    format: "json",
+                },
+            }
+        );
+        console.log(openstreetmap.data);
+        return resSuccess({
+            res,
+            title: "Sukses mendapatkan detail bis",
+            data: { ...data, streetName: openstreetmap.data.display_name },
+        });
+    } catch (error) {
+        console.log(error);
+        return resError({
+            res,
+            title: "Gagal mendapatkan detail bis",
+            data: error,
         });
     }
 };

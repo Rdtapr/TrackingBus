@@ -9,8 +9,10 @@ router
     .patch(controllers.edit)
     .delete(controllers.delete);
 
+router.get("/:idBis", controllers.detailBis);
 router.patch("/driver/set", controllers.setSupirBis);
 router.patch("/status/set-emergency", controllers.setKondisiDarurat);
 router.patch("/status/unset-emergency", controllers.setKondisiNormal);
+router.patch("/position/set", controllers.setBusPosition);
 
 module.exports = router;
