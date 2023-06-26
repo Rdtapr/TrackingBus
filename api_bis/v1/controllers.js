@@ -324,3 +324,21 @@ exports.detailBis = async (req, res) => {
         });
     }
 };
+
+exports.setBusPositionMQTT = async (data, feedback) => {
+    const body = JSON.parse(data);
+    if (body.type === "uplink") {
+        const [type, lat, long, nomorPolisi] = String(
+            JSON.parse(body.data).p
+        ).split("#");
+        console.log(type, lat, long, nomorPolisi);
+        await prisma.bis.update({
+            where: {
+                nomorPolisi,
+            },
+            data: {
+                position: `${lat},${long}`,
+            },
+        });
+    }
+};

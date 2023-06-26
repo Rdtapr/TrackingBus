@@ -57,15 +57,15 @@ model Sekolah {
 }
 
 model Siswa {
-  id        String   @id @default(cuid())
-  nisn      String?  @unique
-  cardId    String?  @unique
+  id        String    @id @default(cuid())
+  nisn      String?   @unique
+  cardId    String?   @unique
   nama      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Sekolah   Sekolah? @relation(fields: [sekolahId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Sekolah   Sekolah?  @relation(fields: [sekolahId], references: [id])
   sekolahId String?
-  Commute   Commute? @relation(fields: [commuteId], references: [id])
+  Commute   Commute[]
   commuteId String?
 }
 
@@ -90,7 +90,7 @@ model Bis {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   supirId     String?    @unique
-  Commute     Commute?   @relation(fields: [commuteId], references: [id])
+  Commute     Commute[]
   commuteId   String?
 }
 

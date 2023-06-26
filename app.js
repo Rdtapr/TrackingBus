@@ -4,7 +4,11 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
-const ROUTER = require("./router");
+const { router: ROUTER, mqttTopic } = require("./router");
+const { MqttServer } = require("./mqttserver");
+
+MqttServer.createConnection();
+MqttServer.use(mqttTopic);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
