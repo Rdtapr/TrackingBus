@@ -6,7 +6,7 @@ const ITEM_LIMIT = 2;
 // START COMMUTING
 exports.startCommuting = async (req, res) => {
     try {
-        const { nomorPolisi, cardId, startPosition, finishPosition } = req.body;
+        const { nomorPolisi, cardId, position } = req.body;
         let title, data;
         // TRY FINDING ACTIVE COMMUTING
         const activeCommuting = await prisma.commute.findMany({
@@ -32,6 +32,7 @@ exports.startCommuting = async (req, res) => {
                 },
                 data: {
                     isActiveCommuting: false,
+                    finishPosition: position,
                 },
             });
             title = "Set Active Commuting Data to Nonactive";
@@ -51,8 +52,7 @@ exports.startCommuting = async (req, res) => {
                             nomorPolisi,
                         },
                     },
-                    startPosition,
-                    finishPosition,
+                    startPosition: position,
                     isActiveCommuting: true,
                 },
             });

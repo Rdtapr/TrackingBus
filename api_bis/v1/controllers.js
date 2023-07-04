@@ -198,10 +198,10 @@ exports.setSupirBis = async (req, res) => {
 
 exports.setKondisiDarurat = async (req, res) => {
     try {
-        const { idBis } = req.body;
+        const { nomorPolisi } = req.body;
         const data = await prisma.bis.update({
             where: {
-                id: idBis,
+                nomorPolisi: nomorPolisi,
             },
             data: {
                 status: "DARURAT",
@@ -224,10 +224,10 @@ exports.setKondisiDarurat = async (req, res) => {
 
 exports.setKondisiNormal = async (req, res) => {
     try {
-        const { idBis } = req.body;
+        const { nomorPolisi } = req.body;
         const data = await prisma.bis.update({
             where: {
-                id: idBis,
+                nomorPolisi: nomorPolisi,
             },
             data: {
                 status: "NORMAL",

@@ -17,9 +17,4 @@ router.patch("/status/set-emergency", controllers.setKondisiDarurat);
 router.patch("/status/unset-emergency", controllers.setKondisiNormal);
 router.patch("/position/set", controllers.setBusPosition);
 
-mqttTopic.listener(
-    "v2.0/subs/APP6483d1b203bc171879/DEV64842a9095f2359715",
-    controllers.setBusPositionMQTT
-);
-
-module.exports = { router, mqttTopic };
+module.exports = router;
