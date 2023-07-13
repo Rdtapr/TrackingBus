@@ -13,7 +13,7 @@ exports.setBusPositionMQTT = async (data, feedback) => {
             console.log(body.data);
 
             // UPDATE POSITION
-            if (type == "P") {
+            if (type == "L") {
                 await prisma.bis.update({
                     where: {
                         nomorPolisi,
