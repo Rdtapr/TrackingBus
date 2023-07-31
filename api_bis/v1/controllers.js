@@ -290,6 +290,8 @@ exports.detailBis = async (req, res) => {
                 supir: {
                     select: {
                         nama: true,
+                        nomorTelepon: true,
+                        alamat: true,
                     },
                 },
             },
