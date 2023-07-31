@@ -195,6 +195,29 @@ exports.delete = async (req, res) => {
     }
 };
 
+exports.detail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await prisma.siswa.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mendapatkan data siswa",
+            data: data,
+        });
+    } catch (error) {
+        return resError({
+            res,
+            errors: error,
+            title: "Gagal mendapatkan detail siswa",
+            code: 400,
+        });
+    }
+};
+
 exports.hubungkanSiswaKeKartu = async (req, res) => {
     try {
         const { id, cardID } = req.body;
