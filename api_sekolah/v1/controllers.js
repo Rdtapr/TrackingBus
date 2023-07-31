@@ -155,6 +155,29 @@ exports.delete = async (req, res) => {
     }
 };
 
+exports.detail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await prisma.sekolah.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        return resSuccess({
+            res,
+            title: "Berhasil mendapatkan data sekolah",
+            data: data,
+        });
+    } catch (error) {
+        return resError({
+            res,
+            errors: error,
+            title: "Gagal mendapatkan detail sekolah",
+            code: 400,
+        });
+    }
+};
+
 exports.hubungkanSekolahDenganSiswa = async (req, res) => {
     try {
         const { idSiswa, idSekolah } = req.body;
