@@ -1,6 +1,6 @@
 const prisma = require("../../prisma/client");
 const { resError, resSuccess } = require("../../services/responseHandler");
-const ITEM_LIMIT = 2;
+const ITEM_LIMIT = Number(process.env.ITEM_LIMIT) || 10;
 
 exports.create = async (req, res) => {
     try {
