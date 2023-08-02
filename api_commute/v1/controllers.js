@@ -266,6 +266,9 @@ exports.siswaCommute = async (req, res) => {
                     },
                 },
                 take: ITEM_LIMIT,
+                orderBy: {
+                    createdAt: "desc",
+                },
             });
         }
 
@@ -305,6 +308,9 @@ exports.siswaCommute = async (req, res) => {
                 skip: 1,
                 cursor: {
                     id: cursor,
+                },
+                orderBy: {
+                    createdAt: "desc",
                 },
             });
         }
